@@ -1,3 +1,5 @@
+import 'package:attendance_system/helpers/general_method.dart';
+import 'package:attendance_system/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_system/size_config.dart';
 import 'package:attendance_system/model/onboarding/onboarding_model.dart';
@@ -86,7 +88,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           contents[i].desc,
                           style: TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize: (width <= 550) ? 17 : 25,
+                            fontSize: (width <= 550) ? 14 : 20,
                           ),
                           textAlign: TextAlign.center,
                         )
@@ -114,7 +116,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ? Padding(
                           padding: const EdgeInsets.all(30),
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              navigateTo(
+                                context,
+                                SignInScreen(),
+                              );
+                            },
                             child: const Text("START"),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black,

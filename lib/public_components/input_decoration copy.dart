@@ -20,18 +20,18 @@ InputDecoration textFieldInputDecoration(String labelText,
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     fillColor: Colors.white,
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15.0),
+      borderRadius: BorderRadius.circular(5.0),
       borderSide: BorderSide(color: kPrimaryColor, width: 1.0),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15.0),
+      borderRadius: BorderRadius.circular(5.0),
       borderSide: BorderSide(
         width: 1.0,
         color: Colors.black.withOpacity(0.33),
       ),
     ),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15.0),
+      borderRadius: BorderRadius.circular(5.0),
       borderSide: BorderSide(
         width: 1.0,
         color: Colors.black.withOpacity(0.33),
