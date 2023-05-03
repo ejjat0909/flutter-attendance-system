@@ -22,6 +22,12 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
   Future<AttendanceListResponseModel>? getAttendance() async {
     AttendanceBloc attendanceBloc = AttendanceBloc();
 
+    void updateAttendanceList(AttendanceModel attendanceModel) {
+      setState(() {
+        attendanceModelList.add(attendanceModel);
+      });
+    }
+
     // for auto update
     setState(() {});
     try {
@@ -50,6 +56,7 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
     // TODO: implement initState
     super.initState();
     getAttendance();
+    
     attendanceModelList = widget.attendanceModel;
   }
 
@@ -69,49 +76,69 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
           style: TextStyle(color: kBlack),
         ),
       ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: ListView.builder(
-          itemCount: attendanceModelList.length,
-          itemBuilder: (context, index) {
-            return ScaleTap(
-              onPressed: () {
-                navigateTo(
-                  context,
-                  ViewAttendanceScreen(
-                    attendanceModel: attendanceModelList[index],
+      body: FutureBuilder<AttendanceListResponseModel>(
+          future: getAttendance(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data!.isSuccess) {
+                List<AttendanceModel> attendance = snapshot.data!.data!;
+                return GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: attendanceModelList.length,
+                    itemBuilder: (context, index) {
+                      return ScaleTap(
+                        onPressed: () {
+                          navigateTo(
+                            context,
+                            ViewAttendanceScreen(
+                              attendanceModel: attendanceModelList[index],
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(5),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: kPrimaryColor, width: 1),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                attendanceModelList[index].title!,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                attendanceModelList[index].body!,
+                                textAlign: TextAlign.justify,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 );
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(5),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: kPrimaryColor, width: 1),
+              } else {
+                return const Center(
+                  child: Text("Something went wrong."),
+                );
+              }
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      attendanceModelList[index].title!,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      attendanceModelList[index].body!,
-                      textAlign: TextAlign.justify,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+              );
+            }
+          }),
     );
   }
 }
