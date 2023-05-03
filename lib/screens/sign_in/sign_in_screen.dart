@@ -11,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:attendance_system/screens/home_page/home_page_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -162,12 +163,12 @@ class _SignInScreenState extends State<SignInScreen> {
       // what to do when success?
       if (mounted) {
         print("login");
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => HomePage(userModel: responseModel.data!),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePageScreen(userModel: responseModel.data!),
+          ),
+        );
       }
     } else {
       // not successful
