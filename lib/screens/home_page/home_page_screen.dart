@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:attendance_system/public_components/space.dart';
 import 'package:flutter_scale_tap/flutter_scale_tap.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -81,7 +82,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   void _onScroll() {
     //use minScrollExtent because reverse:true in listview
     if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+        _scrollController.position.minScrollExtent) {
       ThemeSnackBar.showSnackBar(
           context, "You have reached the end of the list");
       print("end scroll");
@@ -191,7 +192,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       List<AttendanceModel> attendance = snapshot.data!.data!;
                       return ListView.builder(
                           controller: _scrollController,
-                          reverse: false,
+                          reverse: true,
                           physics: BouncingScrollPhysics(),
                           itemCount: attendance.length,
                           itemBuilder: (context, index) {
@@ -224,7 +225,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   children: [
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           attendanceModel.user!.name!,
@@ -232,7 +233,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                             color: kPrimaryColor,
                                             fontWeight: FontWeight.w500,
                                           ),
-                                        )
+                                        ),
+                                        ScaleTap(
+                                          onPressed: () {
+                                            showBottomSheet(context);
+                                          },
+                                          child: Icon(
+                                            Iconsax.menu,
+                                            size: 18,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 10),
@@ -292,6 +302,52 @@ class _HomePageScreenState extends State<HomePageScreen> {
           },
         ),
       ),
+    );
+  }
+
+  void showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 75,
+          padding: EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  ThemeSnackBar.showSnackBar(context, "Link Attendance Copied");
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  //  color: Colors.red,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Iconsax.share,
+                        color: kPrimaryColor,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text("Share Attendance"),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
