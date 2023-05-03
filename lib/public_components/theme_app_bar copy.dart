@@ -32,7 +32,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
               iconSize: 24,
               icon: Icon(
                 Iconsax.arrow_left,
-                color: Colors.black,
+                color: kPrimaryColor,
               ),
             )
           : null,
@@ -41,7 +41,7 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
       title: Text(
         title,
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: kPrimaryColor),
       ),
 
       backgroundColor: kWhite,
